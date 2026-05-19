@@ -74,7 +74,7 @@ await expect(page.locator("#login2")).toContainText("Log in");
 
 //Verify page is loaded
 await expect(page.getByText("CATEGORIES")).toBeVisible();
-console.log("Containers text is visible");
+console.log("Categories text is visible");
 
 //Login as User
 

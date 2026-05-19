@@ -19,9 +19,9 @@ export class Signup
     {
         await this.Signuplink.click();
 
-        const verifysignuppopup = await this.page.locator("#signInModalLabel").textContent();
+        const verifysignup = await this.page.locator("#signInModalLabel").textContent();
 
-        if(verifysignuppopup == "Sign up")
+        if(verifysignup == "Sign up")
         {
             console.log("Sign Up Popup displayed");
         }

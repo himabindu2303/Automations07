@@ -21,18 +21,4 @@ export class HomePage{
          const title= await this.page.title();;
             return title; 
     }
-
-    //Verify clicking the Signup button
-    async ClickSignup()
-    {
-        await this.Signup.click();
-    }
-
-    //Verify clicking the Login button
-    async ClickLogin()
-    {
-        await this.Login.click();
-    }
-
-
 }

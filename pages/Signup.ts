@@ -4,6 +4,9 @@ export class Signup
 {
     page: Page;
     Signuplink: Locator;
+    Username: Locator;
+    Password: Locator;
+    signinbutton: Locator;
     
 
     constructor(page:Page)
@@ -11,6 +14,9 @@ export class Signup
 
             this.page= page;
             this.Signuplink= page.getByRole("link", {name: "Sign up"});
+            this.Username= page.locator("#sign-username");
+            this.Password= page.locator("#sign-password");
+            this.signinbutton = page.getByRole('button', { name: 'Sign up' });
 
     }
 
@@ -31,6 +37,17 @@ export class Signup
         }
 
     }
+
+    //Verify Signup for new user
+    async NewUserSignup(username: string, password: string)
+    {
+        await this.Username.fill(username);
+        await this.Password.fill(password);
+        await this.signinbutton.click();
+        console.log("Signed in Successfully");
+
+    }
+
 
 
 

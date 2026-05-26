@@ -57,6 +57,7 @@ export class ProductPage {
                 console.log("Successfully added Product", product);
             }
         }
+        await this.page.getByRole('link', { name: 'Home' }).click();
 
     }
 

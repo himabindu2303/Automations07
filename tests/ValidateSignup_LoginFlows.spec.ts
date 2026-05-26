@@ -49,6 +49,33 @@ test("Verify User Sign In and Login functionality", async ({ page }) => {
         await login.VerifyLogin(testData.validUser.username, testData.validUser.password);
     }
 
-    //Verify Productpage displays Categories section
-    const product = new ProductPage(page);
+    const Products = new ProductPage(page);
+/*
+     //Verify selecting new Category
+       let selectedcategory= await Products.selectcategory(testData.Category.item1);
+       
+       console.log("You have selected" , selectedcategory); // displays the selected category name
+       
+   
+       //Clicking on Next Button
+       await Products.nextbutton(page);
+   
+       //Verify Selecting First Product from the list
+       await Products.productselection(testData.Selectproduct.product1);
+       
+       //Verify adding selected product to cart
+       await Products.addtocart(page);
+   
+       //Verify Selecting Second Product from the list
+       await Products.productselection(testData.Selectproduct.product2); */
+
+
+
+
+await Products.addProductsFromMultipleCategories(
+    testData.selectproducts,
+    page
+);
+
+
 })

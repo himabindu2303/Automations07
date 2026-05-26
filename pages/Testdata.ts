@@ -5,8 +5,16 @@ export const testData = {
     password: "test123"
   },
 
-  newUser: {
-    username: "newuser123",
-    password: "newpass123"
-  }
+  selectproducts:[
+    {
+        category: 'Laptops',
+        products: ['Sony vaio i5', 'Dell i7 8gb']
+    },
+    {
+
+        category: 'Phones',
+        products: ['Samsung galaxy s6']
+    }
+  ]
+
 };

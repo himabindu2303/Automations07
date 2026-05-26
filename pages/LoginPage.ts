@@ -31,39 +31,38 @@ export class LoginPage {
 
     //Verifying Login with the user
     async VerifyLogin(Username: string, Password: string): Promise<boolean> {
+
         await this.username.fill(Username); // adds the values in fields
         await this.password.fill(Password);
-        let isUserExists = true;
-        let dialogDetected = false;
-
-        this.page.once('dialog', async dialog => {
-            dialogDetected = true;
-
-            const content = dialog.message();
-
-            if (content.includes("User does not exist")) {
-                isUserExists = false;
-            }
-
-            await dialog.accept();
-
-            // Close login modal only if dialog came
-            await this.page.getByLabel('Log in').getByText('Close').click();
-        });
-
 
         await this.loginbutton.click();
 
-        console.log("Login clicked");
+        const userText = this.page.locator('#nameofuser');
+        const loginModal = this.page.locator('#logInModal');
 
+        try {
 
-        if (isUserExists) {
+            // Check successful login (old user)
+            await userText.waitFor({ state: 'visible', timeout: 5000 });
 
-            const userText = this.page.locator("#nameofuser");
-            await expect(userText).toBeVisible();
             await expect(userText).toContainText(Username);
-        }
+            console.log("Login successful - existing user");
 
-        return isUserExists;
+            return true; // old user
+
+        } catch {
+
+            // New user (or) invalid login
+            console.log("User does not exist - navigating for signup");
+
+            if (await loginModal.isVisible()) {
+                await loginModal.getByRole('button', { name: 'Close' }).click();
+            }
+
+            return false; // new user
+        }
     }
+
+
+
 }

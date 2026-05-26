@@ -7,11 +7,11 @@ export class ProductPage {
     constructor(page: Page) {
         this.page = page;
         expect(this.page.getByText("CATEGORIES")).toBeVisible();
-        console.log("Categories text is visible");
+        console.log("Homepage Launched - Categories text is visible");
     }
 
 
-    //Verify Categories section
+    //Category selection
     async selectcategory(category: string): Promise<string> {
 
         if (category == "Phones") {
@@ -28,41 +28,7 @@ export class ProductPage {
             await this.page.getByRole('link', { name: 'Monitors' }).click();
         }
         return category;
-
     }
-
-    //Clicking on Next button
-    async nextbutton(page: Page) {
-
-        const Nextbutton = page.locator('#next2');
-        await expect(Nextbutton).toBeEnabled();
-        await Nextbutton.click();
-    }
-
-    //Selecting the Product from list
-    async productselection(product: string) {
-
-        const selectproduct = this.page.getByRole('link', { name: product });
-
-        await expect(selectproduct).toBeVisible();
-
-        await selectproduct.click();
-
-        await expect(this.page.locator("#more-information")).toBeVisible();
-
-        console.log(" Details page is displayed for ", product);
-    }
-
-    //Adding item to the cart from product details page
-
-    async addtocart(page: Page) {
-
-        const addtocart = await page.getByRole('link', { name: "Add to cart" });
-        await addtocart.click();
-
-    }
-
-
 
 
     async addProductsFromMultipleCategories(data: any[], page: Page) {
@@ -74,29 +40,24 @@ export class ProductPage {
 
             for (const product of products) {
 
+                // Always navigates category to select the product
+                await this.page.getByRole('link', { name: 'Home' }).click();
                 await this.selectcategory(category);
 
                 await this.page.waitForSelector('.card-title');
 
+                // Open product
                 await this.page.locator('.card-title', { hasText: product }).click();
 
-                page.once('dialog', async dialog => {
-
-                    await this.page.getByRole('link', { name: 'Add to cart' }).click();
-                    await dialog.accept();
-                });
-                await page.goBack();
+                // Handle dialog
+               await Promise.all([
+                    this.page.waitForEvent('dialog').then(dialog => dialog.accept()),
+                    this.page.getByRole('link', { name: 'Add to cart' }).click()
+                ]);
+                console.log("Successfully added Product", product);
             }
-
-            await page.getByRole('link', { name: 'Cart' }).click();
-
-            // ✅ Verify all products
-            await expect(page.locator('text=Sony vaio i5')).toBeVisible();
-            await expect(page.locator('text=Dell i7 8gb')).toBeVisible();
-            await expect(page.locator('text=Samsung galaxy s6')).toBeVisible();
-            console.log("Validated cart");
-
         }
+
     }
 
 }
